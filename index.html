@@ -5,21 +5,14 @@
   <head>
 
     <meta charset="UTF-8">
+
     <title>CoderBay</title>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-
     <!-- Bootstrap CDN-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <!-- Firebase Reference -->
-    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
-
-    <!-- Moment -->
-    <script src="assets/js/moment.js" type="text/javascript"></script>
-
+    
   </head>
 
   <body>
@@ -90,13 +83,13 @@
               </div>
 
               <div class="form-group">
-                <label for="start-time">First Train Time (hh:mm - military time)</label>
+                <label for="start-time">First Train Time</label>
                 <input class="form-control" id="start-time" type="time">
               </div>
 
               <div class="form-group">
                 <label for="frequency">Frequency (min)</label>
-                <input class="form-control" id="frequency" type="number">
+                <input class="form-control" id="frequency" type="number" placeholder="minutes">
               </div>
 
               <button class="btn btn-primary" id="submit" type="submit">Submit</button>
@@ -111,133 +104,14 @@
 
     </div>
 
+    <!-- Firebase Reference -->
+    <script src="https://www.gstatic.com/firebasejs/4.1.2/firebase.js"></script>
 
-    <!-- JAVASCRIPT -->
-    <script>
+    <!-- Moment -->
+    <script src="assets/js/moment.js" type="text/javascript"></script>
 
-    // Initialize Firebase
-      
-
-      
-
-      $(document).ready(function() {
-
-        
-
-        var database = firebase.database();
-        var trainName = null;
-        var trainDest = null;
-        var trainStart = null;
-        var trainFreq = null;
-
-          
-
-
-        // Whenever a user clicks the submit-bid button
-        $("#submit").on("click", function(event) {
-
-          event.preventDefault();
-          //console.log('submit clicked');
-
-          // Get the input values
-          trainName = $("#train-name").val().trim();
-          trainDest = $("#destination").val().trim();
-          trainStart = $("#start-time").val().trim();
-          trainFreq = parseInt($("#frequency").val().trim());
-
-          // console.log(trainName);
-          // console.log(trainDest);
-          // console.log(trainStart);
-          // console.log(trainFreq);
-
-          database.ref().push({
-            name: trainName,
-            destination: trainDest,
-            start: trainStart,
-            frequency: trainFreq
-          })
-
-        })
-
-
-
-        database.ref().on("child_added", function(childSnapshot, prevChildKey) {
-          //console.log(childSnapshot.val().name);
-
-
-             // First Time (pushed back 1 year to make sure it comes before current time)
-          var firstTimeConverted = moment(childSnapshot.val().start, "hh:mm").subtract(1, "years");
-          console.log(firstTimeConverted);
-
-          // Current Time
-          var currentTime = moment();
-          console.log("CURRENT TIME: " + moment(currentTime).format("hh:mm"));
-
-          // Difference between the times
-          var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-          console.log("DIFFERENCE IN TIME: " + diffTime);
-
-          // Time apart (remainder)
-          var remainder = diffTime % childSnapshot.val().frequency;
-          console.log(remainder);
-
-          // Minute Until Train
-          var minutesTillTrain = childSnapshot.val().frequency - remainder;
-          console.log("MINUTES TILL TRAIN: " + minutesTillTrain);
-
-          // Next Train
-          var nextTrain = moment().add(minutesTillTrain, "minutes");
-          console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-
-
-           // adding train schedule HTML
-          var newRow = $("<tr>");
-             
-          newRow.html("<td>" + childSnapshot.val().name + "</td><td>" + childSnapshot.val().destination + "</td><td>" + childSnapshot.val().frequency + " min</td><td>" + nextTrain + "</td><td>" + minutesTillTrain + " min</td>");
-
-
-            $('#current-schedule').append(newRow);
-
-
-        })
-
-
-
-
-        function clear(element) {
-          $(element).empty();
-        }
-
-      });
-
-      /* 
-
-//How to change the employeStart from the database a moment time object
-
-moment.unix(start).format("MM/DD/YY");
-
-// To calculate the difference from start date until now.
-moment().diff(moment.unix(start, "X"), "minutes")
-
-
-          var rowContainer = $('<tr>').attr('id', 'tr-container');
-          $("#current-schedule").append(rowContainer);
-
-
-      var empStartPretty = moment().diff(moment.unix(empStart, "X"), "months");
-      console.log("monhths: " + empMonths);
-
-      var months = moment().diff(moment.unix(empStart, "X"), "months");
-
-      var empBilled = empMonths * empRate;
-
-      database.ref().orderByChild("date-added").limitToLast(1).on("child_added", function() {
-      
-      })
-
-      */
-
-    </script>
+    <!-- JavaScript -->
+    <script src="assets/js/train.js" type="text/javascript"></script>
 
   </body>
 
