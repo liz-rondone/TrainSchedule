@@ -130,9 +130,6 @@
         var trainStart = null;
         var trainFreq = null;
 
-
-          
-
           
 
 
@@ -167,12 +164,9 @@
         database.ref().on("child_added", function(childSnapshot, prevChildKey) {
           //console.log(childSnapshot.val().name);
 
-          //var total pay = snapshot.val().monthly * months worked;
 
-          //full list of items to the well
-
-          // First Time (pushed back 1 year to make sure it comes before current time)
-          var firstTimeConverted = moment(trainStart, "hh:mm").subtract(1, "years");
+             // First Time (pushed back 1 year to make sure it comes before current time)
+          var firstTimeConverted = moment(childSnapshot.val().start, "hh:mm").subtract(1, "years");
           console.log(firstTimeConverted);
 
           // Current Time
@@ -184,25 +178,29 @@
           console.log("DIFFERENCE IN TIME: " + diffTime);
 
           // Time apart (remainder)
-          var remainder = diffTime % trainFreq;
+          var remainder = diffTime % childSnapshot.val().frequency;
           console.log(remainder);
 
           // Minute Until Train
-          var minutesTillTrain = trainFreq - remainder;
+          var minutesTillTrain = childSnapshot.val().frequency - remainder;
           console.log("MINUTES TILL TRAIN: " + minutesTillTrain);
 
           // Next Train
           var nextTrain = moment().add(minutesTillTrain, "minutes");
           console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
 
-          // adding train schedule HTML
+
+           // adding train schedule HTML
           var newRow = $("<tr>");
              
-          newRow.html("<td>" + childSnapshot.val().name + "</td><td>" + childSnapshot.val().destination + "</td><td>" + childSnapshot.val().frequency + " min</td><td>" + childSnapshot.val().nextTrain + "</td><td>" + childSnapshot.val().minutesTillTrain + " min</td>");
-            
-          $('#current-schedule').append(newRow);
+          newRow.html("<td>" + childSnapshot.val().name + "</td><td>" + childSnapshot.val().destination + "</td><td>" + childSnapshot.val().frequency + " min</td><td>" + nextTrain + "</td><td>" + minutesTillTrain + " min</td>");
+
+
+            $('#current-schedule').append(newRow);
+
 
         })
+
 
 
 
