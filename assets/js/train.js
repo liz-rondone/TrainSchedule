@@ -4,6 +4,7 @@ $(document).ready(function() {
   
 
 
+
   /********* Global Variables *********/
   var database = firebase.database();
   var trainName = null;
@@ -71,12 +72,9 @@ $(document).ready(function() {
 
     // Next Train
     var nextTrain = moment().add(minutesTillTrain, "minutes");
-    var nextTrainUnix = moment.unix(nextTrain).format("hh:mm a");
-    console.log(nextTrain);
-    console.log(nextTrainUnix);
-    //moment.unix(start).format("MM/DD/YY");
-    //console.log("ARRIVAL TIME: " + moment(nextTrain).format("hh:mm"));
-
+    var nextTrainUnix = moment(nextTrain).format("hh:mm a");
+    //console.log(nextTrain);
+    //console.log(nextTrainUnix);
 
      // adding train schedule HTML
     var newRow = $("<tr>");
