@@ -1,0 +1,39 @@
+.bkgrd-blue {background-color: #001e5e;}
+
+.bord-box {box-sizing: border-box;}
+
+.disp-tabcell {display: table-cell;}
+.disp-inlineblock {display: inline-block;}
+
+.intro-img {
+	display: table;
+	width: 100%;
+	height: 100vh;
+	background: url(../images/train.JPG) top center fixed;
+	background-size: cover;
+	padding: 0;
+	margin: 0;
+}
+
+.font-blue {color: #001e5e;}
+.font-bold {font-weight: bold;}
+.font-white {color: #ffffff;}
+.font-h-40 {line-height: 40px;}
+.fs-20 {font-size: 20px;}
+.fs-40 {font-size: 40px;}
+.fs-75 {font-size: 75px;}
+
+.marg-auto {margin: auto auto;}
+.marg-0 {margin: 0;}
+.marg-30 {margin: 30px;}
+
+.pad-0 {padding: 0;}
+.pad-t-40pct {padding-top: 40%;}
+
+.txt-algn-cntr {text-align: center;}
+
+.vert-algn-cntr {vertical-align: middle;}
+
+/*blue: 001e5e*/
+/*magenta: 824759*/
+
